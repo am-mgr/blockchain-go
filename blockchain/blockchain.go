@@ -42,6 +42,7 @@ func NewChain() *BlockChain {
 
 //NewBlock Create new block
 func (blockchain *BlockChain) NewBlock(content []byte) *Block {
+
 	return &Block{
 		Content: content,
 	}
@@ -54,8 +55,15 @@ func (blockchain *BlockChain) GetBlocks() []Block {
 
 //AddBlock Add the block to chain
 func (blockchain *BlockChain) AddBlock(block Block) {
+	var prevHash string
+	if blockchain.currentID == 0 {
+		prevHash = ""
+	} else {
+		prevHash = blockchain.blocks[blockchain.currentID-1].hash
+	}
 	blockchain.currentID = blockchain.currentID + 1
 	block.id = blockchain.currentID
+	block.previousBlockHash = prevHash
 	block.calculateHash()
 	blockchain.blocks = append(blockchain.blocks, block)
 }
