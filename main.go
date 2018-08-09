@@ -9,14 +9,16 @@ func main() {
 
 	bchain := blockchain.NewChain()
 
-	block := bchain.NewBlock([]byte("Hello BlockChain"))
+	block1 := bchain.NewBlock([]byte("Hello BlockChain"))
 	block2 := bchain.NewBlock([]byte("Greetings"))
 
-	bchain.AddBlock(*block)
-	bchain.AddBlock(*block2)
+	bchain.AddBlock(block1)
+	bchain.AddBlock(block2)
 
-	// block2.Content = []byte("Hello")
+	for _, block := range bchain.GetBlocks() {
 
-	fmt.Println(bchain.GetBlocks())
+		fmt.Println(block)
+	}
+
 	fmt.Println(bchain.VerifyChain())
 }

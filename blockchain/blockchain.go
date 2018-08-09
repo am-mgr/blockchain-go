@@ -16,7 +16,7 @@ type Block struct {
 //BlockChain type
 type BlockChain struct {
 	currentID int
-	blocks    []Block
+	blocks    []*Block
 }
 
 func hash(ip []byte) string {
@@ -36,7 +36,7 @@ func (block *Block) calculateHash() {
 func NewChain() *BlockChain {
 	return &BlockChain{
 		currentID: 0,
-		blocks:    make([]Block, 0),
+		blocks:    make([]*Block, 0),
 	}
 }
 
@@ -49,12 +49,12 @@ func (blockchain *BlockChain) NewBlock(content []byte) *Block {
 }
 
 //GetBlocks Get all blocks
-func (blockchain *BlockChain) GetBlocks() []Block {
+func (blockchain *BlockChain) GetBlocks() []*Block {
 	return blockchain.blocks
 }
 
 //AddBlock Add the block to chain
-func (blockchain *BlockChain) AddBlock(block Block) {
+func (blockchain *BlockChain) AddBlock(block *Block) {
 	var prevHash string
 	if blockchain.currentID == 0 {
 		prevHash = ""
@@ -70,20 +70,12 @@ func (blockchain *BlockChain) AddBlock(block Block) {
 
 //VerifyChain Verify integrity of blockchain
 func (blockchain *BlockChain) VerifyChain() bool {
-	var calculatedHash string
+	var originalHash string
 	isValid := true
 	for _, block := range blockchain.blocks {
-		if block.id >= 2 {
-			isValid = isValid && block.hash == calculatedHash
-			if !isValid {
-				break
-			}
-		}
+		originalHash = block.hash
 		block.calculateHash()
-		calculatedHash = block.hash
-		if block.id == 1 {
-			continue
-		}
+		isValid = isValid && originalHash == block.hash
 	}
 	return isValid
 }
