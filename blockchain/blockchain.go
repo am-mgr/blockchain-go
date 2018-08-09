@@ -67,3 +67,23 @@ func (blockchain *BlockChain) AddBlock(block Block) {
 	block.calculateHash()
 	blockchain.blocks = append(blockchain.blocks, block)
 }
+
+//VerifyChain Verify integrity of blockchain
+func (blockchain *BlockChain) VerifyChain() bool {
+	var calculatedHash string
+	isValid := true
+	for _, block := range blockchain.blocks {
+		if block.id >= 2 {
+			isValid = isValid && block.hash == calculatedHash
+			if !isValid {
+				break
+			}
+		}
+		block.calculateHash()
+		calculatedHash = block.hash
+		if block.id == 1 {
+			continue
+		}
+	}
+	return isValid
+}
