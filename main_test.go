@@ -1,7 +1,7 @@
 package main
 
 import (
-	"blockchain/blockchain"
+	"blockchain-go/blockchain"
 	"testing"
 )
 
